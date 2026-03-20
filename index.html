@@ -34,6 +34,8 @@
             --text2: #7a7a96;
             --border: #222240;
             --red: #e74c3c;
+            --blue: #3b82f6;
+            --blue-fade: rgba(59, 130, 246, 0.08);
         }
 
         body {
@@ -45,8 +47,6 @@
         }
 
         a { color: inherit; text-decoration: none; }
-
-        /* ── SVG Icons (inline) ─────────────────────────────── */
 
         .icon {
             display: inline-block;
@@ -64,11 +64,12 @@
         .icon.lg { width: 32px; height: 32px; }
         .icon.xl { width: 40px; height: 40px; }
         .icon.filled { fill: currentColor; stroke: none; }
-.logo-img {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-}
+
+        .logo-img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
 
         /* ── Nav ─────────────────────────────────────────────── */
 
@@ -107,6 +108,7 @@
             display: flex;
             gap: 28px;
             list-style: none;
+            align-items: center;
         }
 
         .nav-links a {
@@ -117,6 +119,12 @@
         }
 
         .nav-links a:hover { color: var(--text); }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
 
         .nav-cta {
             font-size: 13px;
@@ -129,6 +137,118 @@
         }
 
         .nav-cta:hover { opacity: 0.85; }
+
+        /* ── Language Switcher ────────────────────────────────── */
+
+        .lang-switcher {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .lang-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 5px 12px;
+            color: var(--text2);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .lang-btn:hover {
+            border-color: var(--text2);
+            color: var(--text);
+        }
+
+        .lang-btn .globe {
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .lang-btn .chevron {
+            font-size: 10px;
+            transition: transform 0.2s;
+        }
+
+        .lang-switcher.open .lang-btn .chevron {
+            transform: rotate(180deg);
+        }
+
+        .lang-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 4px;
+            min-width: 160px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-4px);
+            transition: all 0.2s;
+            z-index: 200;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        .lang-switcher.open .lang-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .lang-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--text2);
+            cursor: pointer;
+            transition: all 0.15s;
+            border: none;
+            background: none;
+            width: 100%;
+            font-family: inherit;
+            text-align: left;
+        }
+
+        .lang-option:hover {
+            background: var(--accent-fade);
+            color: var(--text);
+        }
+
+        .lang-option.active {
+            color: var(--accent);
+            background: var(--accent-fade);
+        }
+
+        .lang-option .flag {
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .lang-option .lang-name {
+            flex: 1;
+        }
+
+        .lang-option .check {
+            font-size: 14px;
+            color: var(--accent);
+            opacity: 0;
+        }
+
+        .lang-option.active .check {
+            opacity: 1;
+        }
 
         /* ── Hero ────────────────────────────────────────────── */
 
@@ -438,6 +558,59 @@
             color: var(--text2);
         }
 
+        /* ── Languages Section ───────────────────────────────── */
+
+        .lang-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .lang-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: border-color 0.25s;
+        }
+
+        .lang-card:hover {
+            border-color: var(--accent-border);
+        }
+
+        .lang-card-flag {
+            font-size: 32px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .lang-card-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .lang-card-info p {
+            font-size: 12px;
+            color: var(--text2);
+        }
+
+        .lang-card-info .lang-code {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--accent);
+            background: var(--accent-fade);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         /* ── YTG Section ─────────────────────────────────────── */
 
         .ytg-grid {
@@ -560,15 +733,22 @@
             margin-bottom: 28px;
         }
 
+        .dl-btns {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
         .dl-main-btn {
             display: inline-flex;
             align-items: center;
             gap: 10px;
             background: var(--accent);
             color: var(--bg);
-            padding: 14px 36px;
+            padding: 14px 32px;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             transition: all 0.2s;
             border: none;
@@ -577,6 +757,23 @@
 
         .dl-main-btn:hover {
             background: var(--accent2);
+        }
+
+        .dl-main-btn.macos {
+            background: var(--bg3);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .dl-main-btn.macos:hover {
+            border-color: var(--text2);
+            background: var(--bg2);
+        }
+
+        .dl-os-label {
+            font-size: 11px;
+            color: var(--text2);
+            margin-top: 4px;
         }
 
         .dl-checks {
@@ -668,12 +865,14 @@
         @media (max-width: 800px) {
             .hero h1 { font-size: 30px; }
             .f-grid { grid-template-columns: 1fr; }
+            .lang-grid { grid-template-columns: 1fr; }
             .plat-row { flex-direction: column; }
             .ytg-grid { grid-template-columns: 1fr; }
             .nav-links { display: none; }
             .hero { padding: 120px 20px 60px; }
             section { padding: 60px 20px; }
             .dl-box { padding: 36px 24px; }
+            .dl-btns { flex-direction: column; align-items: center; }
         }
 
         /* ── Scroll reveal ───────────────────────────────────── */
@@ -700,11 +899,38 @@
             YTGreen
         </a>
         <ul class="nav-links">
-            <li><a href="#features">Features</a></li>
-            <li><a href="#platforms">Platforms</a></li>
-            <li><a href="#ytg">YTG Format</a></li>
+            <li><a href="#features" data-i18n="nav_features">Features</a></li>
+            <li><a href="#platforms" data-i18n="nav_platforms">Platforms</a></li>
+            <li><a href="#languages" data-i18n="nav_languages">Languages</a></li>
+            <li><a href="#ytg" data-i18n="nav_ytg">YTG Format</a></li>
         </ul>
-        <a href="#download" class="nav-cta">Download</a>
+        <div class="nav-right">
+            <div class="lang-switcher" id="langSwitcher">
+                <button class="lang-btn" id="langBtn">
+                    <span class="globe">🌐</span>
+                    <span id="langCurrent">EN</span>
+                    <span class="chevron">▾</span>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <button class="lang-option active" data-lang="en">
+                        <span class="flag">🇺🇸</span>
+                        <span class="lang-name">English</span>
+                        <span class="check">✓</span>
+                    </button>
+                    <button class="lang-option" data-lang="pt-br">
+                        <span class="flag">🇧🇷</span>
+                        <span class="lang-name">Português (BR)</span>
+                        <span class="check">✓</span>
+                    </button>
+                    <button class="lang-option" data-lang="es">
+                        <span class="flag">🇪🇸</span>
+                        <span class="lang-name">Español</span>
+                        <span class="check">✓</span>
+                    </button>
+                </div>
+            </div>
+            <a href="#download" class="nav-cta" data-i18n="nav_download">Download</a>
+        </div>
     </div>
 </nav>
 
@@ -712,19 +938,19 @@
 <div class="hero">
     <div class="hero-tag">
         <svg class="icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v4m0 12v4m-10-10h4m12 0h4m-3.3-6.7l-2.8 2.8m-8.5 8.5l-2.8 2.8m0-14.1l2.8 2.8m8.5 8.5l2.8 2.8"/></svg>
-        v2.6 — Now with .YTG support
+        <span data-i18n="hero_tag">v2.6.1 — Now with multi-language support</span>
     </div>
-    <h1>A video downloader that <span>doesn't suck</span></h1>
-    <p class="hero-desc">
+    <h1 data-i18n="hero_title" data-i18n-html="true">A video downloader that <span>doesn't suck</span></h1>
+    <p class="hero-desc" data-i18n="hero_desc">
         Grab videos from YouTube, TikTok, and Reddit. No bloat, no ads,
         no 47 toolbars. Just paste and download.
     </p>
     <div class="hero-actions">
         <a href="#download" class="btn btn-green">
             <svg class="icon sm" viewBox="0 0 24 24"><path d="M12 5v14m0 0l-6-6m6 6l6-6"/></svg>
-            Download
+            <span data-i18n="nav_download">Download</span>
         </a>
-        <a href="#features" class="btn btn-outline">
+        <a href="#features" class="btn btn-outline" data-i18n="hero_whats_inside">
             What's inside
         </a>
     </div>
@@ -737,15 +963,15 @@
             <div class="dot dot-r"></div>
             <div class="dot dot-y"></div>
             <div class="dot dot-g"></div>
-            <span class="preview-bar-title">YTGreen v2.6.0</span>
+            <span class="preview-bar-title">YTGreen v2.6.1</span>
         </div>
         <div class="preview-body">
             <div class="p-head">YTGreen</div>
             <div class="p-tabs">
-                <div class="p-tab active">Download</div>
-                <div class="p-tab">Batch</div>
-                <div class="p-tab">Queue</div>
-                <div class="p-tab">History</div>
+                <div class="p-tab active" data-i18n="preview_download">Download</div>
+                <div class="p-tab" data-i18n="preview_batch">Batch</div>
+                <div class="p-tab" data-i18n="preview_queue">Queue</div>
+                <div class="p-tab" data-i18n="preview_history">History</div>
             </div>
             <div class="p-url">https://youtube.com/watch?v=dQw4w9WgXcQ</div>
             <div class="p-progress-track">
@@ -758,82 +984,82 @@
 
 <!-- Features -->
 <section id="features">
-    <div class="sec-label sr">Features</div>
-    <div class="sec-title sr">What you get</div>
-    <div class="sec-desc sr">No feature bloat. Just the stuff you actually use.</div>
+    <div class="sec-label sr" data-i18n="nav_features">Features</div>
+    <div class="sec-title sr" data-i18n="features_title">What you get</div>
+    <div class="sec-desc sr" data-i18n="features_desc">No feature bloat. Just the stuff you actually use.</div>
 
     <div class="f-grid">
         <div class="f-card sr">
             <div class="f-icon">
                 <svg class="icon lg" viewBox="0 0 24 24"><path d="M12 5v14m0 0l-6-6m6 6l6-6"/></svg>
             </div>
-            <h3>Paste & Download</h3>
-            <p>Paste a link, pick a quality, hit download. No sign-ups, no waiting.</p>
+            <h3 data-i18n="feat_paste_title">Paste & Download</h3>
+            <p data-i18n="feat_paste_desc">Paste a link, pick a quality, hit download. No sign-ups, no waiting.</p>
         </div>
         <div class="f-card sr">
             <div class="f-icon">
                 <svg class="icon lg" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
             </div>
-            <h3>Queue System</h3>
-            <p>Stack up multiple downloads. They run one after another automatically.</p>
+            <h3 data-i18n="feat_queue_title">Queue System</h3>
+            <p data-i18n="feat_queue_desc">Stack up multiple downloads. They run one after another automatically.</p>
         </div>
         <div class="f-card sr">
             <div class="f-icon">
                 <svg class="icon lg" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
             </div>
-            <h3>Batch Mode</h3>
-            <p>Dump a list of URLs. Fetch all their info at once. Add them all to queue.</p>
+            <h3 data-i18n="feat_batch_title">Batch Mode</h3>
+            <p data-i18n="feat_batch_desc">Dump a list of URLs. Fetch all their info at once. Add them all to queue.</p>
         </div>
         <div class="f-card sr">
             <div class="f-icon">
                 <svg class="icon lg" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
             </div>
-            <h3>Video Preview</h3>
-            <p>See the thumbnail, title, channel, and duration before you download anything.</p>
+            <h3 data-i18n="feat_preview_title">Video Preview</h3>
+            <p data-i18n="feat_preview_desc">See the thumbnail, title, channel, and duration before you download anything.</p>
         </div>
         <div class="f-card sr">
             <div class="f-icon">
                 <svg class="icon lg" viewBox="0 0 24 24"><path d="M6 4l12 0M6 4l0 2c0 3 2 6 6 7c4-1 6-4 6-7l0-2"/><path d="M12 13v4m-3 3h6"/></svg>
             </div>
-            <h3>Trim Clips</h3>
-            <p>Set a start and end time. Download only the segment you actually want.</p>
+            <h3 data-i18n="feat_trim_title">Trim Clips</h3>
+            <p data-i18n="feat_trim_desc">Set a start and end time. Download only the segment you actually want.</p>
         </div>
         <div class="f-card sr">
             <div class="f-icon">
                 <svg class="icon lg" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
             </div>
-            <h3>Audio Only</h3>
-            <p>Extract audio as MP3 or M4A. Good for music, podcasts, whatever.</p>
+            <h3 data-i18n="feat_audio_title">Audio Only</h3>
+            <p data-i18n="feat_audio_desc">Extract audio as MP3 or M4A. Good for music, podcasts, whatever.</p>
         </div>
         <div class="f-card sr">
             <div class="f-icon">
                 <svg class="icon lg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
-            <h3>History</h3>
-            <p>Every download is logged. Redownload anything with one click.</p>
+            <h3 data-i18n="feat_history_title">History</h3>
+            <p data-i18n="feat_history_desc">Every download is logged. Redownload anything with one click.</p>
         </div>
         <div class="f-card sr">
             <div class="f-icon" style="background: var(--purple-fade); color: var(--purple);">
                 <svg class="icon lg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             </div>
-            <h3>.YTG Files</h3>
-            <p>Save and share video collections. Others open them and get instant queue loading.</p>
+            <h3 data-i18n="feat_ytg_title">.YTG Files</h3>
+            <p data-i18n="feat_ytg_desc">Save and share video collections. Others open them and get instant queue loading.</p>
         </div>
         <div class="f-card sr">
-            <div class="f-icon">
-                <svg class="icon lg" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+            <div class="f-icon" style="background: var(--blue-fade); color: var(--blue);">
+                <svg class="icon lg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
             </div>
-            <h3>Clean Interface</h3>
-            <p>Dark theme. Tabs for everything. No clutter. Looks good at 2 AM.</p>
+            <h3 data-i18n="feat_lang_title">Multi-Language</h3>
+            <p data-i18n="feat_lang_desc">Switch between English, Portuguese, and Spanish. More languages coming soon.</p>
         </div>
     </div>
 </section>
 
 <!-- Platforms -->
 <section id="platforms">
-    <div class="sec-label sr">Platforms</div>
-    <div class="sec-title sr">Where it works</div>
-    <div class="sec-desc sr">Three platforms. That's it. They work well.</div>
+    <div class="sec-label sr" data-i18n="nav_platforms">Platforms</div>
+    <div class="sec-title sr" data-i18n="platforms_title">Where it works</div>
+    <div class="sec-desc sr" data-i18n="platforms_desc">Three platforms. That's it. They work well.</div>
 
     <div class="plat-row sr">
         <div class="plat-card">
@@ -842,7 +1068,7 @@
             </div>
             <div>
                 <h3>YouTube</h3>
-                <p>Videos, Shorts, playlists, music. All qualities up to best available.</p>
+                <p data-i18n="plat_yt_desc">Videos, Shorts, playlists, music. All qualities up to best available.</p>
             </div>
         </div>
         <div class="plat-card">
@@ -851,7 +1077,7 @@
             </div>
             <div>
                 <h3>TikTok</h3>
-                <p>Download TikTok videos. No watermark nonsense.</p>
+                <p data-i18n="plat_tt_desc">Download TikTok videos. No watermark nonsense.</p>
             </div>
         </div>
         <div class="plat-card">
@@ -860,7 +1086,41 @@
             </div>
             <div>
                 <h3>Reddit</h3>
-                <p>Grab video posts directly. No v.redd.it headaches.</p>
+                <p data-i18n="plat_rd_desc">Grab video posts directly. No v.redd.it headaches.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Languages -->
+<section id="languages">
+    <div class="sec-label sr" data-i18n="nav_languages">Languages</div>
+    <div class="sec-title sr" data-i18n="lang_section_title">Speak your language</div>
+    <div class="sec-desc sr" data-i18n="lang_section_desc">YTGreen now supports multiple languages. Switch instantly in the app or on this site.</div>
+
+    <div class="lang-grid sr">
+        <div class="lang-card">
+            <div class="lang-card-flag">🇺🇸</div>
+            <div class="lang-card-info">
+                <h3>English</h3>
+                <p data-i18n="lang_en_desc">Default language. Full support.</p>
+                <span class="lang-code">EN</span>
+            </div>
+        </div>
+        <div class="lang-card">
+            <div class="lang-card-flag">🇧🇷</div>
+            <div class="lang-card-info">
+                <h3>Português (BR)</h3>
+                <p data-i18n="lang_ptbr_desc">Brazilian Portuguese. Complete translation.</p>
+                <span class="lang-code">PT-BR</span>
+            </div>
+        </div>
+        <div class="lang-card">
+            <div class="lang-card-flag">🇪🇸</div>
+            <div class="lang-card-info">
+                <h3>Español</h3>
+                <p data-i18n="lang_es_desc">Spanish. Complete translation.</p>
+                <span class="lang-code">ES</span>
             </div>
         </div>
     </div>
@@ -870,45 +1130,45 @@
 <section id="ytg">
     <div class="ytg-grid">
         <div class="ytg-left sr">
-            <div class="sec-label">Exclusive</div>
-            <div class="sec-title"><span>.YTG</span> files</div>
-            <p class="sec-desc" style="margin-bottom: 0;">
+            <div class="sec-label" data-i18n="ytg_label">Exclusive</div>
+            <div class="sec-title" data-i18n="ytg_title" data-i18n-html="true"><span>.YTG</span> files</div>
+            <p class="sec-desc" style="margin-bottom: 0;" data-i18n="ytg_desc">
                 A file format made for YTGreen. Cache video metadata and thumbnails
                 into a single file. Hand it to someone, they open it, and every video
                 loads into their queue instantly. No refetching.
             </p>
             <ul class="ytg-steps">
-                <li><span class="step-n">1</span> Fetch info for one or more videos</li>
-                <li><span class="step-n">2</span> Hit "Save .YTG"</li>
-                <li><span class="step-n">3</span> Send the file to whoever you want</li>
-                <li><span class="step-n">4</span> They open it — instant queue, zero wait</li>
+                <li><span class="step-n">1</span> <span data-i18n="ytg_step1">Fetch info for one or more videos</span></li>
+                <li><span class="step-n">2</span> <span data-i18n="ytg_step2">Hit "Save .YTG"</span></li>
+                <li><span class="step-n">3</span> <span data-i18n="ytg_step3">Send the file to whoever you want</span></li>
+                <li><span class="step-n">4</span> <span data-i18n="ytg_step4">They open it — instant queue, zero wait</span></li>
             </ul>
         </div>
         <div class="ytg-right sr">
             <div class="ytg-file-head">
                 <div class="ytg-ext">.YTG</div>
-                <div class="ytg-ext-sub">YTGreen Project File</div>
+                <div class="ytg-ext-sub" data-i18n="ytg_file_sub">YTGreen Project File</div>
             </div>
             <div class="ytg-rows">
                 <div class="ytg-row">
-                    <span>Stores</span>
-                    <span>URLs + metadata + thumbnails</span>
+                    <span data-i18n="ytg_stores">Stores</span>
+                    <span data-i18n="ytg_stores_val">URLs + metadata + thumbnails</span>
                 </div>
                 <div class="ytg-row">
-                    <span>Open speed</span>
-                    <span>Instant</span>
+                    <span data-i18n="ytg_speed">Open speed</span>
+                    <span data-i18n="ytg_speed_val">Instant</span>
                 </div>
                 <div class="ytg-row">
-                    <span>Sharable</span>
-                    <span>Yes</span>
+                    <span data-i18n="ytg_sharable">Sharable</span>
+                    <span data-i18n="ytg_sharable_val">Yes</span>
                 </div>
                 <div class="ytg-row">
-                    <span>Format</span>
+                    <span data-i18n="ytg_format">Format</span>
                     <span>JSON-based</span>
                 </div>
                 <div class="ytg-row">
-                    <span>Size</span>
-                    <span>A few KB per video</span>
+                    <span data-i18n="ytg_size">Size</span>
+                    <span data-i18n="ytg_size_val">A few KB per video</span>
                 </div>
             </div>
         </div>
@@ -918,46 +1178,59 @@
 <!-- Download -->
 <section class="dl-section" id="download">
     <div class="dl-box sr">
-        <h2>Get YTGreen</h2>
-        <p>Single .exe file. No installer. Just run it.</p>
-        <a href="https://github.com/CheezeDeveloper/YTGreen/releases/tag/YTGreenRelease" download class="dl-main-btn">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14m0 0l-6-6m6 6l6-6"/></svg>
-            Download for Windows
-        </a>
+        <h2 data-i18n="dl_title">Get YTGreen</h2>
+        <p data-i18n="dl_desc">No installer needed. Just download and run.</p>
+        <div class="dl-btns">
+            <div>
+                <a href="https://github.com/CheezeDeveloper/YTGreen/releases/tag/YTGreenRelease" download class="dl-main-btn">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14m0 0l-6-6m6 6l6-6"/></svg>
+                    <span data-i18n="dl_btn_win">Windows</span>
+                </a>
+                <div class="dl-os-label">.exe · 64-bit</div>
+            </div>
+            <div>
+                <a href="#" class="dl-main-btn macos" onclick="return false;" style="cursor: default; opacity: 0.5;">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14m0 0l-6-6m6 6l6-6"/></svg>
+                    <span data-i18n="dl_btn_mac">macOS</span>
+                </a>
+                <div class="dl-os-label" data-i18n="dl_mac_soon">Coming soon</div>
+            </div>
+        </div>
         <div class="dl-checks">
             <span class="dl-check">
                 <svg class="icon sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                Free
+                <span data-i18n="dl_free">Free</span>
             </span>
             <span class="dl-check">
                 <svg class="icon sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                No install
+                <span data-i18n="dl_no_install">No install</span>
             </span>
             <span class="dl-check">
                 <svg class="icon sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                No ads
+                <span data-i18n="dl_no_ads">No ads</span>
             </span>
-            <span class="dl-check">
-                </section>
+        </div>
+    </div>
+</section>
 
 <!-- Requirements -->
 <div class="req-section sr">
     <div class="req-box">
-        <h3>Requirements</h3>
+        <h3 data-i18n="req_title">Requirements</h3>
         <div class="req-row">
             <div class="req-dot"></div>
-            <strong>Windows 10 / 11</strong>
+            <strong data-i18n="req_os">Windows 10+ / macOS 12+</strong>
             <span>64-bit</span>
         </div>
         <div class="req-row">
             <div class="req-dot"></div>
             <strong>FFmpeg</strong>
-            <span>audio conversion & merging</span>
+            <span data-i18n="req_ffmpeg">audio conversion & merging</span>
         </div>
         <div class="req-row">
             <div class="req-dot"></div>
             <strong>Internet</strong>
-            <span>obviously</span>
+            <span data-i18n="req_internet">obviously</span>
         </div>
     </div>
 </div>
@@ -965,13 +1238,318 @@
 <!-- Footer -->
 <footer>
     <div class="foot-name">YTGreen</div>
-    <p class="foot-copy">
+    <p class="foot-copy" data-i18n="footer_copy">
         Not affiliated with YouTube, TikTok, or Reddit.
         Respect copyright. Only download what you're allowed to.
     </p>
 </footer>
 
 <script>
+const translations = {
+    en: {
+        nav_features: "Features",
+        nav_platforms: "Platforms",
+        nav_languages: "Languages",
+        nav_ytg: "YTG Format",
+        nav_download: "Download",
+
+        hero_tag: "v2.6.1 — Now with multi-language support",
+        hero_title: 'A video downloader that <span>doesn\'t suck</span>',
+        hero_desc: "Grab videos from YouTube, TikTok, and Reddit. No bloat, no ads, no 47 toolbars. Just paste and download.",
+        hero_whats_inside: "What's inside",
+
+        preview_download: "Download",
+        preview_batch: "Batch",
+        preview_queue: "Queue",
+        preview_history: "History",
+
+        features_title: "What you get",
+        features_desc: "No feature bloat. Just the stuff you actually use.",
+        feat_paste_title: "Paste & Download",
+        feat_paste_desc: "Paste a link, pick a quality, hit download. No sign-ups, no waiting.",
+        feat_queue_title: "Queue System",
+        feat_queue_desc: "Stack up multiple downloads. They run one after another automatically.",
+        feat_batch_title: "Batch Mode",
+        feat_batch_desc: "Dump a list of URLs. Fetch all their info at once. Add them all to queue.",
+        feat_preview_title: "Video Preview",
+        feat_preview_desc: "See the thumbnail, title, channel, and duration before you download anything.",
+        feat_trim_title: "Trim Clips",
+        feat_trim_desc: "Set a start and end time. Download only the segment you actually want.",
+        feat_audio_title: "Audio Only",
+        feat_audio_desc: "Extract audio as MP3 or M4A. Good for music, podcasts, whatever.",
+        feat_history_title: "History",
+        feat_history_desc: "Every download is logged. Redownload anything with one click.",
+        feat_ytg_title: ".YTG Files",
+        feat_ytg_desc: "Save and share video collections. Others open them and get instant queue loading.",
+        feat_lang_title: "Multi-Language",
+        feat_lang_desc: "Switch between English, Portuguese, and Spanish. More languages coming soon.",
+
+        platforms_title: "Where it works",
+        platforms_desc: "Three platforms. That's it. They work well.",
+        plat_yt_desc: "Videos, Shorts, playlists, music. All qualities up to best available.",
+        plat_tt_desc: "Download TikTok videos. No watermark nonsense.",
+        plat_rd_desc: "Grab video posts directly. No v.redd.it headaches.",
+
+        lang_section_title: "Speak your language",
+        lang_section_desc: "YTGreen now supports multiple languages. Switch instantly in the app or on this site.",
+        lang_en_desc: "Default language. Full support.",
+        lang_ptbr_desc: "Brazilian Portuguese. Complete translation.",
+        lang_es_desc: "Spanish. Complete translation.",
+
+        ytg_label: "Exclusive",
+        ytg_title: '<span>.YTG</span> files',
+        ytg_desc: "A file format made for YTGreen. Cache video metadata and thumbnails into a single file. Hand it to someone, they open it, and every video loads into their queue instantly. No refetching.",
+        ytg_step1: "Fetch info for one or more videos",
+        ytg_step2: 'Hit "Save .YTG"',
+        ytg_step3: "Send the file to whoever you want",
+        ytg_step4: "They open it — instant queue, zero wait",
+        ytg_file_sub: "YTGreen Project File",
+        ytg_stores: "Stores",
+        ytg_stores_val: "URLs + metadata + thumbnails",
+        ytg_speed: "Open speed",
+        ytg_speed_val: "Instant",
+        ytg_sharable: "Sharable",
+        ytg_sharable_val: "Yes",
+        ytg_format: "Format",
+        ytg_size: "Size",
+        ytg_size_val: "A few KB per video",
+
+        dl_title: "Get YTGreen",
+        dl_desc: "No installer needed. Just download and run.",
+        dl_btn_win: "Windows",
+        dl_btn_mac: "macOS",
+        dl_mac_soon: "Coming soon",
+        dl_free: "Free",
+        dl_no_install: "No install",
+        dl_no_ads: "No ads",
+
+        req_title: "Requirements",
+        req_os: "Windows 10+ / macOS 12+",
+        req_ffmpeg: "audio conversion & merging",
+        req_internet: "obviously",
+
+        footer_copy: "Not affiliated with YouTube, TikTok, or Reddit. Respect copyright. Only download what you're allowed to."
+    },
+
+    "pt-br": {
+        nav_features: "Recursos",
+        nav_platforms: "Plataformas",
+        nav_languages: "Idiomas",
+        nav_ytg: "Formato YTG",
+        nav_download: "Baixar",
+
+        hero_tag: "v2.6.1 — Agora com suporte a múltiplos idiomas",
+        hero_title: 'Um downloader de vídeo que <span>não é ruim</span>',
+        hero_desc: "Baixe vídeos do YouTube, TikTok e Reddit. Sem bloatware, sem anúncios, sem 47 barras de ferramentas. Só colar e baixar.",
+        hero_whats_inside: "O que tem dentro",
+
+        preview_download: "Baixar",
+        preview_batch: "Lote",
+        preview_queue: "Fila",
+        preview_history: "Histórico",
+
+        features_title: "O que você recebe",
+        features_desc: "Sem recursos inúteis. Só o que você realmente usa.",
+        feat_paste_title: "Colar e Baixar",
+        feat_paste_desc: "Cole um link, escolha a qualidade, clique em baixar. Sem cadastro, sem espera.",
+        feat_queue_title: "Sistema de Fila",
+        feat_queue_desc: "Empilhe vários downloads. Eles rodam um após o outro automaticamente.",
+        feat_batch_title: "Modo em Lote",
+        feat_batch_desc: "Cole uma lista de URLs. Busque todas as informações de uma vez. Adicione tudo à fila.",
+        feat_preview_title: "Pré-visualização",
+        feat_preview_desc: "Veja a miniatura, título, canal e duração antes de baixar qualquer coisa.",
+        feat_trim_title: "Cortar Trechos",
+        feat_trim_desc: "Defina um tempo de início e fim. Baixe apenas o trecho que você quer.",
+        feat_audio_title: "Apenas Áudio",
+        feat_audio_desc: "Extraia áudio como MP3 ou M4A. Bom para música, podcasts, etc.",
+        feat_history_title: "Histórico",
+        feat_history_desc: "Cada download é registrado. Rebaixe qualquer coisa com um clique.",
+        feat_ytg_title: "Arquivos .YTG",
+        feat_ytg_desc: "Salve e compartilhe coleções de vídeos. Outros abrem e carregam a fila instantaneamente.",
+        feat_lang_title: "Multi-Idioma",
+        feat_lang_desc: "Alterne entre Inglês, Português e Espanhol. Mais idiomas em breve.",
+
+        platforms_title: "Onde funciona",
+        platforms_desc: "Três plataformas. Só isso. Funcionam bem.",
+        plat_yt_desc: "Vídeos, Shorts, playlists, música. Todas as qualidades até a melhor disponível.",
+        plat_tt_desc: "Baixe vídeos do TikTok. Sem marca d'água chata.",
+        plat_rd_desc: "Baixe posts de vídeo diretamente. Sem dor de cabeça com v.redd.it.",
+
+        lang_section_title: "Fale seu idioma",
+        lang_section_desc: "YTGreen agora suporta múltiplos idiomas. Troque instantaneamente no app ou neste site.",
+        lang_en_desc: "Idioma padrão. Suporte completo.",
+        lang_ptbr_desc: "Português Brasileiro. Tradução completa.",
+        lang_es_desc: "Espanhol. Tradução completa.",
+
+        ytg_label: "Exclusivo",
+        ytg_title: 'Arquivos <span>.YTG</span>',
+        ytg_desc: "Um formato de arquivo feito para o YTGreen. Armazene metadados e miniaturas de vídeos em um único arquivo. Entregue a alguém, eles abrem, e todos os vídeos carregam na fila instantaneamente. Sem rebuscar.",
+        ytg_step1: "Busque informações de um ou mais vídeos",
+        ytg_step2: 'Clique em "Salvar .YTG"',
+        ytg_step3: "Envie o arquivo para quem quiser",
+        ytg_step4: "Eles abrem — fila instantânea, zero espera",
+        ytg_file_sub: "Arquivo de Projeto YTGreen",
+        ytg_stores: "Armazena",
+        ytg_stores_val: "URLs + metadados + miniaturas",
+        ytg_speed: "Velocidade",
+        ytg_speed_val: "Instantâneo",
+        ytg_sharable: "Compartilhável",
+        ytg_sharable_val: "Sim",
+        ytg_format: "Formato",
+        ytg_size: "Tamanho",
+        ytg_size_val: "Alguns KB por vídeo",
+
+        dl_title: "Baixe o YTGreen",
+        dl_desc: "Sem instalador. Só baixar e executar.",
+        dl_btn_win: "Windows",
+        dl_btn_mac: "macOS",
+        dl_mac_soon: "Em breve",
+        dl_free: "Grátis",
+        dl_no_install: "Sem instalação",
+        dl_no_ads: "Sem anúncios",
+
+        req_title: "Requisitos",
+        req_os: "Windows 10+ / macOS 12+",
+        req_ffmpeg: "conversão de áudio e mesclagem",
+        req_internet: "obviamente",
+
+        footer_copy: "Não afiliado ao YouTube, TikTok ou Reddit. Respeite os direitos autorais. Baixe apenas o que você tem permissão."
+    },
+
+    es: {
+        nav_features: "Características",
+        nav_platforms: "Plataformas",
+        nav_languages: "Idiomas",
+        nav_ytg: "Formato YTG",
+        nav_download: "Descargar",
+
+        hero_tag: "v2.6.1 — Ahora con soporte multiidioma",
+        hero_title: 'Un descargador de videos que <span>no apesta</span>',
+        hero_desc: "Descarga videos de YouTube, TikTok y Reddit. Sin bloatware, sin anuncios, sin 47 barras de herramientas. Solo pega y descarga.",
+        hero_whats_inside: "Qué incluye",
+
+        preview_download: "Descargar",
+        preview_batch: "Lote",
+        preview_queue: "Cola",
+        preview_history: "Historial",
+
+        features_title: "Lo que obtienes",
+        features_desc: "Sin funciones innecesarias. Solo lo que realmente usas.",
+        feat_paste_title: "Pegar y Descargar",
+        feat_paste_desc: "Pega un enlace, elige la calidad, descarga. Sin registros, sin esperas.",
+        feat_queue_title: "Sistema de Cola",
+        feat_queue_desc: "Apila múltiples descargas. Se ejecutan una tras otra automáticamente.",
+        feat_batch_title: "Modo por Lotes",
+        feat_batch_desc: "Pega una lista de URLs. Obtén toda la info de una vez. Agrégalas todas a la cola.",
+        feat_preview_title: "Vista Previa",
+        feat_preview_desc: "Ve la miniatura, título, canal y duración antes de descargar.",
+        feat_trim_title: "Recortar Clips",
+        feat_trim_desc: "Define un tiempo de inicio y fin. Descarga solo el segmento que quieres.",
+        feat_audio_title: "Solo Audio",
+        feat_audio_desc: "Extrae audio como MP3 o M4A. Ideal para música, podcasts, lo que sea.",
+        feat_history_title: "Historial",
+        feat_history_desc: "Cada descarga se registra. Vuelve a descargar cualquier cosa con un clic.",
+        feat_ytg_title: "Archivos .YTG",
+        feat_ytg_desc: "Guarda y comparte colecciones de videos. Otros los abren y cargan la cola al instante.",
+        feat_lang_title: "Multi-Idioma",
+        feat_lang_desc: "Cambia entre Inglés, Portugués y Español. Más idiomas próximamente.",
+
+        platforms_title: "Dónde funciona",
+        platforms_desc: "Tres plataformas. Eso es todo. Funcionan bien.",
+        plat_yt_desc: "Videos, Shorts, playlists, música. Todas las calidades hasta la mejor disponible.",
+        plat_tt_desc: "Descarga videos de TikTok. Sin marcas de agua molestas.",
+        plat_rd_desc: "Descarga publicaciones de video directamente. Sin dolores de cabeza con v.redd.it.",
+
+        lang_section_title: "Habla tu idioma",
+        lang_section_desc: "YTGreen ahora soporta múltiples idiomas. Cambia instantáneamente en la app o en este sitio.",
+        lang_en_desc: "Idioma predeterminado. Soporte completo.",
+        lang_ptbr_desc: "Portugués Brasileño. Traducción completa.",
+        lang_es_desc: "Español. Traducción completa.",
+
+        ytg_label: "Exclusivo",
+        ytg_title: 'Archivos <span>.YTG</span>',
+        ytg_desc: "Un formato de archivo hecho para YTGreen. Almacena metadatos y miniaturas de videos en un solo archivo. Dáselo a alguien, lo abren, y todos los videos se cargan en su cola al instante. Sin volver a buscar.",
+        ytg_step1: "Busca información de uno o más videos",
+        ytg_step2: 'Haz clic en "Guardar .YTG"',
+        ytg_step3: "Envía el archivo a quien quieras",
+        ytg_step4: "Lo abren — cola instantánea, cero espera",
+        ytg_file_sub: "Archivo de Proyecto YTGreen",
+        ytg_stores: "Almacena",
+        ytg_stores_val: "URLs + metadatos + miniaturas",
+        ytg_speed: "Velocidad",
+        ytg_speed_val: "Instantáneo",
+        ytg_sharable: "Compartible",
+        ytg_sharable_val: "Sí",
+        ytg_format: "Formato",
+        ytg_size: "Tamaño",
+        ytg_size_val: "Unos pocos KB por video",
+
+        dl_title: "Obtén YTGreen",
+        dl_desc: "Sin instalador. Solo descargar y ejecutar.",
+        dl_btn_win: "Windows",
+        dl_btn_mac: "macOS",
+        dl_mac_soon: "Próximamente",
+        dl_free: "Gratis",
+        dl_no_install: "Sin instalación",
+        dl_no_ads: "Sin anuncios",
+
+        req_title: "Requisitos",
+        req_os: "Windows 10+ / macOS 12+",
+        req_ffmpeg: "conversión de audio y fusión",
+        req_internet: "obviamente",
+
+        footer_copy: "No afiliado con YouTube, TikTok ni Reddit. Respeta los derechos de autor. Solo descarga lo que tienes permitido."
+    }
+};
+
+const langLabels = { en: "EN", "pt-br": "PT", es: "ES" };
+let currentLang = localStorage.getItem("ytgreen-lang") || "en";
+
+function applyLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem("ytgreen-lang", lang);
+    const t = translations[lang] || translations.en;
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (t[key] !== undefined) {
+            if (el.getAttribute("data-i18n-html") === "true") {
+                el.innerHTML = t[key];
+            } else {
+                el.textContent = t[key];
+            }
+        }
+    });
+    document.getElementById("langCurrent").textContent = langLabels[lang] || "EN";
+    document.querySelectorAll(".lang-option").forEach(opt => {
+        opt.classList.toggle("active", opt.getAttribute("data-lang") === lang);
+    });
+    document.documentElement.lang = lang === "pt-br" ? "pt-BR" : lang;
+}
+
+const langSwitcher = document.getElementById("langSwitcher");
+const langBtn = document.getElementById("langBtn");
+
+langBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    langSwitcher.classList.toggle("open");
+});
+
+document.addEventListener("click", (e) => {
+    if (!langSwitcher.contains(e.target)) {
+        langSwitcher.classList.remove("open");
+    }
+});
+
+document.querySelectorAll(".lang-option").forEach(opt => {
+    opt.addEventListener("click", () => {
+        const lang = opt.getAttribute("data-lang");
+        applyLanguage(lang);
+        langSwitcher.classList.remove("open");
+    });
+});
+
+applyLanguage(currentLang);
+
 const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
         if (e.isIntersecting) e.target.classList.add('show');
