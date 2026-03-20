@@ -1,0 +1,89 @@
+name: Build YTGreen
+
+on:
+  workflow_dispatch:
+
+jobs:
+  # ── Windows Build ──────────────────────────────
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pyinstaller yt-dlp pillow requests
+
+      - name: Build .exe
+        run: >
+          pyinstaller
+          --onefile
+          --windowed
+          --name YTGreen
+          --icon=YTGreen.ico
+          --add-data "YTGreen.ico;."
+          --add-data "lang.json;."
+          YTGreen.py
+
+      - name: Upload Windows build
+        uses: actions/upload-artifact@v4
+        with:
+          name: YTGreen-Windows
+          path: dist/YTGreen.exe
+
+  # ── macOS Build ────────────────────────────────
+  macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pyinstaller yt-dlp pillow requests
+
+      - name: Create .icns icon
+        run: |
+          mkdir -p YTGreen.iconset
+          sips -z 16 16     YTGreen.png --out YTGreen.iconset/icon_16x16.png
+          sips -z 32 32     YTGreen.png --out YTGreen.iconset/icon_16x16@2x.png
+          sips -z 32 32     YTGreen.png --out YTGreen.iconset/icon_32x32.png
+          sips -z 64 64     YTGreen.png --out YTGreen.iconset/icon_32x32@2x.png
+          sips -z 128 128   YTGreen.png --out YTGreen.iconset/icon_128x128.png
+          sips -z 256 256   YTGreen.png --out YTGreen.iconset/icon_128x128@2x.png
+          sips -z 256 256   YTGreen.png --out YTGreen.iconset/icon_256x256.png
+          sips -z 512 512   YTGreen.png --out YTGreen.iconset/icon_256x256@2x.png
+          sips -z 512 512   YTGreen.png --out YTGreen.iconset/icon_512x512.png
+          sips -z 1024 1024 YTGreen.png --out YTGreen.iconset/icon_512x512@2x.png
+          iconutil -c icns YTGreen.iconset
+
+      - name: Build .app
+        run: >
+          pyinstaller
+          --onefile
+          --windowed
+          --name YTGreen
+          --icon=YTGreen.icns
+          --add-data "YTGreen.ico:."
+          --add-data "lang.json:."
+          YTGreen.py
+
+      - name: Zip .app bundle
+        run: |
+          cd dist
+          zip -r YTGreen-macOS.zip YTGreen.app
+
+      - name: Upload macOS build
+        uses: actions/upload-artifact@v4
+        with:
+          name: YTGreen-macOS
+          path: dist/YTGreen-macOS.zip
