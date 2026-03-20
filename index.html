@@ -1190,15 +1190,19 @@
                 <div class="dl-os-label">.exe · 64-bit</div>
             </div>
 
-            <!-- macOS Button -->
+                        <!-- macOS Button -->
             <div>
+                <!-- 1. We put the real link in href -->
+                <!-- 2. We REMOVED 'onclick="return false"' (which blocked clicks) -->
+                <!-- 3. We REMOVED 'style="opacity: 0.5"' (which made it look disabled) -->
                 <a href="https://github.com/CheezeDeveloper/YTGreen/releases/download/2.6.1/YTGreen-macOS.zip" class="dl-main-btn macos">
                     <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14m0 0l-6-6m6 6l6-6"/></svg>
                     <span data-i18n="dl_btn_mac">macOS</span>
                 </a>
+                
+                <!-- 4. We REMOVED 'data-i18n="dl_mac_soon"' so the script stops changing the text back! -->
                 <div class="dl-os-label">.app · macOS 12+</div>
             </div>
-        </div>
 </section>
 
 <!-- Requirements -->
